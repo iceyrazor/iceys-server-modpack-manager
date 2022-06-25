@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<div align="center">
+	<h1>modpack webpage</h1>
+	<p>here is a list of modpacks</p>
+
+	<div id="modpacks"></div>
+	</div>
+
+	<script type="text/javascript">
+		fetch("/modpacklist")
+		.then(res=>res.json())
+		.then(res=>{
+			res.forEach(modpack_name=>{
+				modpacks.innerHTML+='<div><a href="/modpacks/'+modpack_name+
+				'">'+modpack_name+'</div>';
+			})
+		})
+	</script>
+</body>
+</html>

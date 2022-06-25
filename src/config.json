@@ -1,0 +1,28 @@
+{
+	"modpacks":[ //you can have this do multible modpacks
+		{
+			"active":true, //you can deactivate a modpack if you dont want to use it currently
+			"name":"modpack name", //..... really??
+			"server_folder":"optional, but required if you want server > client sync", //not the mods folder!
+			//remove this entirely if not in use! do not leave it blank
+			"server_ignore_filter":[
+				"mod to ignore on server.jar",
+				"mod to ignore on server.jar"
+			],
+			"client_folder":"optional but required for server > client sync",
+			"client_ignore_filter":[
+				"same as server. mods to ignore/ not be deleted by sync"
+			],
+			"compile_zip":false, //should this make a zip of your mods from the defined folder?
+			//it will use the modpack name as the name for the zip
+			"zip_folder":"folder for mods to be ziped", //not the mods folder!! it finds that by itself
+			//make sure your mods are in the /mods folder and NOT /mods/version. ive yet to work with that
+			"zip_ignore_filter":[
+				"same as other. mods to ignore"
+			],
+			"move_zip_to_server":false //will this move the mod zip to the server folder?
+		}
+	],
+	"use_webserver":false, //do you even want to run the webserver?
+	"server_port":4350
+}
