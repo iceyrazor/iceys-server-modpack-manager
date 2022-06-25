@@ -27,6 +27,8 @@ the config has some info on what all the stuff does. but if you need more detail
 
 this only syncs ONCE once it is ran. if you want it to sync again. close the file and reopen it.
 
+this ONLY syncs the MODS folder. and scripts(like zs files from craftweaker), and configs. are not synced
+
 # how do i use it?
 edit the config to your liking. run the exe. 
 
@@ -41,4 +43,5 @@ finally if you have the webserver enabled, it will show that it is running.
 if you dont have the webserver running. you can close the exe once console output stops.
 
 # possible future plans
-1. to make a client that syncs the modpack from the server
+1. allow custom synced folders and files for configs and scripts
+2. to make a client that syncs the modpack from the server
