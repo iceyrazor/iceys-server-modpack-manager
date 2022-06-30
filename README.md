@@ -1,3 +1,6 @@
+# imporntant
+note that i dont know much about security, use any of the online features of this at your own risk!
+
 # iceys-modpack-manager
 a small program i planned to make for myself. then finally made it. and decided to share. minecraft modpack manager for client and server
 
