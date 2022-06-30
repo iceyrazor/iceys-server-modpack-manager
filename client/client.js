@@ -46,9 +46,13 @@ if(fs.existsSync(path.join(main_dir,"client_config.json"))){
         }
     };
     
+    let post_data_arr_in=[]
     req=http.request(options,(res)=>{
-        res.on('data',(data)=>{
-            data=JSON.parse(data)
+        res.on('data',chunk=>{
+            post_data_arr_in.push(chunk)
+        })
+        res.on('end',()=>{
+            data=JSON.parse(Buffer.concat(post_data_arr_in).toString())
 
             if(data.error){
                 console.log(data.error);
