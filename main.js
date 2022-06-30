@@ -145,6 +145,8 @@ function move_file_to_web(modpacks){
 //run webserver
 if(config.use_webserver==true){
 	app.use(express.urlencoded({ extended: true }));
+	app.use(express.json());
+	app.use(express.text());
 
 	app.use(function(req,res,next){
 	  server_log = function server_log(str){
@@ -184,9 +186,76 @@ if(config.use_webserver==true){
 		res.send(fs.readdirSync(path.join(webdir,"modpacks")))
 	})
 
+	if(config.enable_client_server_sync==true){
+		app.post("/clientS_comparemods",function(req,res){
+			config.modpacks.forEach(modpacks=>{
+				if(modpacks.active==true&&modpacks.name==req.body.modpack&&modpacks.use_client_sync==true){
+					let mod_list={client_mods:[],server_mods:[],diff:{add:[],remove:[]}}
+					mod_list.server_mods=fs.readdirSync(path.join(modpacks.client_sync_folder,"mods"))
+					mod_list.client_mods=req.body.mods
+				
+					mod_list.server_mods.forEach(mods=>{
+						let match=false
+						mod_list.client_mods.forEach(cmods=>{
+							if(mods==cmods){
+								match=true
+							}
+						})
+						modpacks.client_sync_ignore_filter.forEach(igmods=>{
+							if(mods==igmods){
+								match=true
+							}
+						})
+						if(match==false){
+							mod_list.diff.add.push(mods)
+						}
+					})
+				
+					mod_list.client_mods.forEach(mods=>{
+						let match=false
+						mod_list.server_mods.forEach(cmods=>{
+							if(mods==cmods){
+								match=true
+							}
+						})
+						if(match==false){
+							mod_list.diff.remove.push(mods)
+						}
+					})
+					res.send(JSON.stringify(mod_list.diff))
+				} else {
+					res.send(JSON.stringify({error:"modpack does not exist"}))
+				}
+			})
+
+		})
+
+		app.post("/clientS_getmods",function(req,res){
+			config.modpacks.forEach(modpacks=>{
+				if(modpacks.active==true&&modpacks.name==req.body.modpack&&modpacks.use_client_sync==true){
+					res.sendFile(path.join(modpacks.client_sync_folder,"mods",req.body.mod))
+				} else {
+					res.send(JSON.stringify({error:"modpack does not exist"}))
+				}
+			});
+
+
+		});
+	} else {
+		app.post("/clientS_comparemods",function(req,res){
+			res.send(JSON.stringify({error:"sync is not enabled"}))
+		});
+		
+		app.post("/clientS_getmods",function(req,res){
+			res.send(JSON.stringify({error:"sync is not enabled"}))
+		});
+	}
+
 	app.get("/*",function(req,res){
 		res.sendFile(path.join(process.cwd(),"src","web","index.html"))
 	})
+
+
 
 	let port=config.server_port
 	app.listen(port,'0.0.0.0', () => {

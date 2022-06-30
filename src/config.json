@@ -3,13 +3,14 @@
 		{
 			"active":true, //you can deactivate a modpack if you dont want to use it currently
 			"name":"modpack name", //..... really??
-			"server_folder":"optional, but required if you want server > client sync", //not the mods folder!
+			"server_folder":"C:\\", //optional, but required if you want server > client sync
+			//not the mods folder!
 			//remove this entirely if not in use! do not leave it blank
 			"server_ignore_filter":[
 				"mod to ignore on server.jar",
 				"mod to ignore on server.jar"
 			],
-			"client_folder":"optional but required for server > client sync",
+			"client_folder":"C:\\", //optional but required for server > client sync
 			"client_ignore_filter":[
 				"same as server. mods to ignore/ not be deleted by sync"
 			],
@@ -20,9 +21,19 @@
 			"zip_ignore_filter":[
 				"same as other. mods to ignore"
 			],
-			"move_zip_to_server":false //will this move the mod zip to the server folder?
+			"move_zip_to_server":false, //will this move the mod zip to the server folder?
+			"use_client_sync":true, //should this be used with the client sync software?
+			//requires enable_client_server_sync enabled
+			"client_sync_folder":"C:\\", //same as others
+			//can either be client folder, server folder, or different folder. you chose
+			"client_sync_ignore_filter":[
+				"same as others but server ignore"
+			]
 		}
 	],
 	"use_webserver":false, //do you even want to run the webserver?
-	"server_port":4350
+	"server_port":4350,
+	"enable_client_server_sync":true //should the client software be allowed? 
+	//requires use_webserver to be enabled
+	//use at your own risk!
 }

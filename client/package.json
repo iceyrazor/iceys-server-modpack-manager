@@ -1,0 +1,12 @@
+{
+  "name": "iceys-server-modpack-manager-client",
+  "version": "0.0.2",
+  "description": "client for iceys-server-modpack-manager",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node ."
+  },
+  "author": "iceyrazor",
+  "license": "ISC"
+}

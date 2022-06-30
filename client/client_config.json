@@ -1,0 +1,8 @@
+{
+  "folder": "C:\\", //same as client folder on server
+  "server_host": "localhost:4350", //host ip/address and port to connect to.
+  "ignore_filter": [
+    "same as client ignore filter on server",
+  ],
+  "modpack": "modpack name" //modpack name (not .zip)
+}
