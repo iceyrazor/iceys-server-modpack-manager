@@ -19,6 +19,8 @@ and if you want. it will automatuially move the zip to the webserver.
 
 this can also do multible modpacks at once. witch you can disable if your not using it
 
+and theres a client sync program that the other user can download and run to sync mods as well
+
 # small detail?
 i tried to make all the code open source even when downloaded. so that you can edit the webpage and mostly everything as you like.
 
@@ -44,4 +46,3 @@ if you dont have the webserver running. you can close the exe once console outpu
 
 # possible future plans
 1. allow custom synced folders and files for configs and scripts
-2. to make a client that syncs the modpack from the server
