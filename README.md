@@ -48,5 +48,6 @@ finally if you have the webserver enabled, it will show that it is running.
 if you dont have the webserver running. you can close the exe once console output stops.
 
 # possible future plans
-1. allow custom synced folders and files for configs and scripts
-2. allow make option to share client and config on web server
+1. fix error folder doesnt exist to folder/mods doesnt exist
+2. allow custom synced folders and files for configs and scripts
+3. allow make option to share client and config on web server
