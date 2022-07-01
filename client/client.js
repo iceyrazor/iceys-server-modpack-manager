@@ -13,6 +13,8 @@ console.log("welcome to icey's modpack sync client");
 if(fs.existsSync(path.join(main_dir,"client_config.json"))){
     config=JSON.parse(fs.readFileSync(path.join(main_dir,"client_config.json")))
     //
+
+    if(fs.existsSync(path.join(config.folder,"mods"))){
     let data = {}
 
     data.mods=fs.readdirSync(path.join(config.folder,"mods"))
@@ -134,6 +136,9 @@ if(fs.existsSync(path.join(main_dir,"client_config.json"))){
     
     req.write(data);
     req.end();
+    } else {
+        console.log("ERROR: folder "+config.folder+" does not exist!");
+    }
 } else {
     //if config doesnt exist. prompt user to create one
     console.log("you can right click to paste if ctrl+v does not work");
