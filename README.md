@@ -49,3 +49,4 @@ if you dont have the webserver running. you can close the exe once console outpu
 
 # possible future plans
 1. allow custom synced folders and files for configs and scripts
+2. allow make option to share client and config on web server
