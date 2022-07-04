@@ -49,9 +49,7 @@ if you dont have the webserver running. you can close the exe once console outpu
 
 # todo
 1. allow for multible modpack managament on client
-2. fix error folder doesnt exist to folder/mods doesnt exist
 
 # possible future plans
-
 2. allow custom synced folders and files for configs and scripts
 3. allow make option to share client and config on web server
