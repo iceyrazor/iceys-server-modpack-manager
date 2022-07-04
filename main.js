@@ -3,7 +3,12 @@ const express=require('express'),
 	fs=require('fs'),
 	path=require('path'),
 	JSZip = require('jszip'),
-	webdir=path.join(process.cwd(),"src","web");
+	webdir=path.join(process.cwd(),"src","web"),
+	readline = require('readline'),
+  consoleinput = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
 
 const zip = new JSZip();
 ////////
@@ -72,6 +77,7 @@ function server_to_client_sync(modpack){
 		}
 	})
 	console.log(mod_list.diff);
+
 
 	mod_list.diff.remove.forEach(remove_mods=>{
 		fs.unlink(path.join(modpack.client_folder,"mods",remove_mods),(err)=>{console.log(err);})
@@ -188,57 +194,83 @@ if(config.use_webserver==true){
 
 	if(config.enable_client_server_sync==true){
 		app.post("/clientS_comparemods",function(req,res){
+			let modpack_exist=false
 			config.modpacks.forEach(modpacks=>{
-				if(modpacks.active==true&&modpacks.name==req.body.modpack&&modpacks.use_client_sync==true){
-					let mod_list={client_mods:[],server_mods:[],diff:{add:[],remove:[]}}
-					mod_list.server_mods=fs.readdirSync(path.join(modpacks.client_sync_folder,"mods"))
-					mod_list.client_mods=req.body.mods
-				
-					mod_list.server_mods.forEach(mods=>{
-						let match=false
-						mod_list.client_mods.forEach(cmods=>{
-							if(mods==cmods){
-								match=true
-							}
-						})
-						modpacks.client_sync_ignore_filter.forEach(igmods=>{
-							if(mods==igmods){
-								match=true
-							}
-						})
-						if(match==false){
-							mod_list.diff.add.push(mods)
-						}
-					})
-				
-					mod_list.client_mods.forEach(mods=>{
-						let match=false
-						mod_list.server_mods.forEach(cmods=>{
-							if(mods==cmods){
-								match=true
-							}
-						})
-						if(match==false){
-							mod_list.diff.remove.push(mods)
-						}
-					})
-					res.send(JSON.stringify(mod_list.diff))
-				} else {
-					res.send(JSON.stringify({error:"modpack does not exist"}))
+				if(modpacks.name==req.body.modpack){
+					modpack_exist=true
 				}
 			})
+			if(modpack_exist==true){
+				config.modpacks.forEach(modpacks=>{
+					if(modpacks.name==req.body.modpack){
+						if(modpacks.active==true&&modpacks.use_client_sync==true){
+							let mod_list={client_mods:[],server_mods:[],diff:{add:[],remove:[]}}
+							mod_list.server_mods=fs.readdirSync(path.join(modpacks.client_sync_folder,"mods"))
+							mod_list.client_mods=req.body.mods
+						
+							mod_list.server_mods.forEach(mods=>{
+								let match=false
+								mod_list.client_mods.forEach(cmods=>{
+									if(mods==cmods){
+										match=true
+									}
+								})
+								modpacks.client_sync_ignore_filter.forEach(igmods=>{
+									if(mods==igmods){
+										match=true
+									}
+								})
+								if(match==false){
+									mod_list.diff.add.push(mods)
+								}
+							})
+						
+							mod_list.client_mods.forEach(mods=>{
+								let match=false
+								mod_list.server_mods.forEach(cmods=>{
+									if(mods==cmods){
+										match=true
+										modpacks.client_sync_ignore_filter.forEach(igmods=>{
+											if(mods==igmods){
+												match=false
+											}
+										})
+									}
+								})
+								if(match==false){
+									mod_list.diff.remove.push(mods)
+								}
+							})
+							res.send(JSON.stringify(mod_list.diff))
+						} else {
+							res.send(JSON.stringify({error:"modpack does not exist"}))
+						}
+					}
+				})
+			} else {
+				res.send(JSON.stringify({error:"modpack does not exist"}))
+			}
 
 		})
 
 		app.post("/clientS_getmods",function(req,res){
+			let modpack_exist=false
 			config.modpacks.forEach(modpacks=>{
-				if(modpacks.active==true&&modpacks.name==req.body.modpack&&modpacks.use_client_sync==true){
-					res.sendFile(path.join(modpacks.client_sync_folder,"mods",req.body.mod))
-				} else {
-					res.send(JSON.stringify({error:"modpack does not exist"}))
+				if(modpacks.name==req.body.modpack){
+					modpack_exist=true
 				}
-			});
-
+			})
+			if(modpack_exist==true){
+				config.modpacks.forEach(modpacks=>{
+					if(modpacks.name==req.body.modpack){
+						if(modpacks.active==true&&modpacks.use_client_sync==true){
+							res.sendFile(path.join(modpacks.client_sync_folder,"mods",req.body.mod))
+						} else {
+							res.send(JSON.stringify({error:"modpack does not exist"}))
+						}
+					}
+				});
+			}
 
 		});
 	} else {
