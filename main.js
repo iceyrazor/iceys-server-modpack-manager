@@ -9,8 +9,6 @@ const express=require('express'),
     input: process.stdin,
     output: process.stdout
   });
-
-const zip = new JSZip();
 ////////
 //time format function because it just has to be complicated
 function changeTimezone(date, ianatz) {
@@ -102,6 +100,7 @@ config.modpacks.forEach(modpacks=>{
 config.modpacks.forEach(modpacks=>{
 	if(modpacks.active==true&&modpacks.compile_zip==true){
 		try {
+			let zip = new JSZip();
 			let zip_path=path.join("src","zip_managed",modpacks.name+".zip")
 			if(fs.existsSync(zip_path)){
 				 fs.unlinkSync(zip_path)
@@ -124,20 +123,18 @@ config.modpacks.forEach(modpacks=>{
 	    			zip.file(mod_name, pdfData);
     			}
     		})
-		
-			setTimeout(()=>{
-    		zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
+			
+    	zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
 			.pipe(fs.createWriteStream(zip_path))
 			.on('finish', function () {
 			    console.log(modpacks.name+".zip written.");
 			    move_file_to_web(modpacks)
 			});
-			},1000);
 		} catch (err) {
     		console.error(err)
 		}
 	}
-})
+});
 
 //move to web
 function move_file_to_web(modpacks){
