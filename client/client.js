@@ -137,7 +137,7 @@ if(fs.existsSync(path.join(main_dir,"client_config.json"))){
     req.write(data);
     req.end();
     } else {
-        console.log("ERROR: folder "+config.folder+" does not exist!");
+        console.log("ERROR: folder "+config.folder+"/mods does not exist");
     }
 } else {
     //if config doesnt exist. prompt user to create one
